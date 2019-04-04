@@ -51,7 +51,16 @@
             register() {
                 this.$refs['form'].validate((valid) => {
                     if (valid) {
-                        this.axios.post('http://192.168.0.216:8081/user', this.form).then(response => console.log(response))
+                        this.axios.post('http://192.168.0.216:8081/user', this.form)
+                            .then(response => console.log(response))
+                            .catch(error => {
+                                console.log(error)
+                                if (error && error.response && error.response.data) {
+                                    if (error.response.data.code === 1001) {
+                                        this.$message.error(error.response.data.message);
+                                    }
+                                }
+                            })
                     }
                 })
             }
